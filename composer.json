@@ -1,0 +1,53 @@
+{
+    "name": "mahdigraph/laravel-sms",
+    "description": "PHP SMS Driver Integration Package",
+    "type": "library",
+    "keywords": [
+        "laravel sms",
+        "laravel persian sms",
+        "laravel sms driver",
+        "php sms provider",
+        "sms",
+        "ippanel",
+        "laravel ippanel package",
+        "farazsms",
+        "laravel farazsms package",
+        "melipayamak",
+        "laravel melipayamak package"
+    ],
+    "homepage": "https://github.com/MahdiGraph/laravel-sms",
+    "require-dev": {
+        "guzzlehttp/guzzle": "^7.4",
+        "ramsey/uuid": "^3.7|^3.8|^3.9|^4.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Metti\\LaravelSms\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Metti\\LaravelSms\\LaravelSMSServiceProvider"
+            ],
+            "aliases": {
+                "SendSMS": "Metti\\LaravelSms\\Facades\\SendSMS"
+            }
+        }
+    },
+    "authors": [
+        {
+            "name": "MahdiGraph",
+            "email": "immahdigraph@gmail.com",
+            "role": "Developer",
+            "homepage": "https://github.com/MahdiGraph"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
