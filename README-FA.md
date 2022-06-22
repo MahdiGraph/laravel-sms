@@ -4,7 +4,7 @@
 
 # پکیج ارسال پیامک در لاراول
 
-[![Software License][ico-license]]
+![Software License][ico-license]
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads on Packagist][ico-download]][link-packagist]
 [![Maintainability](https://api.codeclimate.com/v1/badges/03c352daab19de73191a/maintainability)](https://codeclimate.com/github/MahdiGraph/laravel-sms/maintainability)
