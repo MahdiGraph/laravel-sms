@@ -1,8 +1,9 @@
 <?php
+
 namespace Metti\LaravelSms;
 
-use Metti\LaravelSms\Exceptions\DriverException;
 use Metti\LaravelSms\Contracts\DriverInterface;
+use Metti\LaravelSms\Exceptions\DriverException;
 
 class SendSMS
 {
@@ -34,11 +35,14 @@ class SendSMS
 
     /**
      * @param $driver
-     * @return $this
+     *
      * @throws DriverException|\ReflectionException
+     *
+     * @return $this
      * @description set sms driver (driver must be set in sms config file)
      */
-    public function via($driver){
+    public function via($driver)
+    {
         $this->validateDriver($driver);
         $this->driver = $driver;
         $this->message->originator(@$this->config['drivers'][$driver]['originator']);
@@ -48,21 +52,25 @@ class SendSMS
 
     /**
      * @param $options array
+     *
      * @return $this
      * @description set driver config
      */
-    public function configDriver($options){
-        $this->config['drivers'][$this->driver] = array_merge($this->config['drivers'][$this->driver], (array)$options);
+    public function configDriver($options)
+    {
+        $this->config['drivers'][$this->driver] = array_merge($this->config['drivers'][$this->driver], (array) $options);
 
         return $this;
     }
 
     /**
      * @param $originator
+     *
      * @return $this
      * @description set message originator/sender number
      */
-    public function origanator($originator){
+    public function origanator($originator)
+    {
         $this->message = $this->message->originator($originator);
 
         return $this;
@@ -70,10 +78,12 @@ class SendSMS
 
     /**
      * @param $recipients
+     *
      * @return $this
      * @description send message to recipient number/numbers
      */
-    public function recipients($recipients){
+    public function recipients($recipients)
+    {
         $this->message = $this->message->recipients($recipients);
 
         return $this;
@@ -81,10 +91,12 @@ class SendSMS
 
     /**
      * @param $message
+     *
      * @return $this
      * @description set message text
      */
-    public function textMessage($text){
+    public function textMessage($text)
+    {
         $this->message = $this->message->textMessage($text);
 
         return $this;
@@ -93,22 +105,26 @@ class SendSMS
     /**
      * @param $pattern_id
      * @param $params
+     *
      * @return $this
      * @description send message by pattern (pattern must be set in sms config file)
      */
-    public function patternMessage($pattern_id, $params = []){
-        $this->message = $this->message->patternMessage($pattern_id,$params);
+    public function patternMessage($pattern_id, $params = [])
+    {
+        $this->message = $this->message->patternMessage($pattern_id, $params);
 
         return $this;
     }
 
     /**
-     * @return mixed
      * @throws Exceptions\MessageException
+     *
+     * @return mixed
      * @description send message
      */
-    public function send(){
-        if (empty($this->message->originator)){
+    public function send()
+    {
+        if (empty($this->message->originator)) {
             $this->message->originator(@$this->config['drivers'][$this->driver]['originator']);
         }
         $this->message->driver = $this->driver;
@@ -121,7 +137,7 @@ class SendSMS
      * @return string
      * @description get default config file path
      */
-    public static function getDefaultConfigPath() : string
+    public static function getDefaultConfigPath(): string
     {
         return dirname(__DIR__).'/config/sms.php';
     }
@@ -131,8 +147,9 @@ class SendSMS
      * @throws DriverException
      * @description validate driver name
      */
-    private function validateDriver($driver){
-        if (empty($driver)){
+    private function validateDriver($driver)
+    {
+        if (empty($driver)) {
             throw new DriverException('درایور مشخص نمیباشد');
         }
 
@@ -140,13 +157,13 @@ class SendSMS
             throw new DriverException('درایور مورد نظر در فایل کانفیگ یافت نشد ، لطفا پکیج را آپدیت کنید');
         }
 
-        if (!class_exists(@$this->config['map'][$driver])){
+        if (!class_exists(@$this->config['map'][$driver])) {
             throw new DriverException('آدرس مسیر درایور یافت نشد ، لطفا پکیج را آپدیت کنید');
         }
 
         $reflection = new \ReflectionClass(@$this->config['map'][$driver]);
 
-        if (!$reflection->implementsInterface(DriverInterface::class)){
+        if (!$reflection->implementsInterface(DriverInterface::class)) {
             throw new DriverException("Driver must be an instance of Contracts\DriverInterface.");
         }
 
@@ -157,8 +174,10 @@ class SendSMS
      * @return mixed
      * @description get driver instance
      */
-    private function getDriverInstance(){
+    private function getDriverInstance()
+    {
         $class = $this->config['map'][$this->driver];
+
         return new $class($this->message, $this->config['drivers'][$this->driver]);
     }
 
@@ -166,8 +185,8 @@ class SendSMS
      * @return mixed
      * @description load default config file
      */
-    private function loadDefaultConfig(){
-        return require(static::getDefaultConfigPath());
+    private function loadDefaultConfig()
+    {
+        return require static::getDefaultConfigPath();
     }
-
 }

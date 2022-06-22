@@ -6,18 +6,18 @@ class DriverException extends \Exception
 {
     public function __construct($message, $code = 0, \Exception $previous = null)
     {
-        if (is_null($message)){
+        if (is_null($message)) {
             $message = 'unknown error happened';
         }
-        if (is_array($message)){
+        if (is_array($message)) {
             $text = '';
-            foreach ($message as $key => $value){
-                if (!empty($text)){
+            foreach ($message as $key => $value) {
+                if (!empty($text)) {
                     $text .= ' | ';
                 }
                 if (is_array($value)) {
                     $text .= json_encode($value);
-                }else {
+                } else {
                     $text .= $value;
                 }
             }
