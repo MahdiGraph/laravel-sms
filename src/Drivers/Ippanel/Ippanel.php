@@ -66,12 +66,19 @@ class Ippanel extends Driver
             throw new DriverException('امکان ارسال پترن بطور همزمان به چندین شماره در آیپی پنل پشتیبانی نمیشود');
         }
 
+        $values = array_merge((array) @$this->settings['patterns'][@$this->message->data['pattern_id']]['values'], (array) @$this->message->data['values']);
+        foreach($values as $key => $value){
+            if (!is_string($value)){
+                $values[$key] = (string)$value;
+            }
+        }
+
         return $this->client->request('POST', $this->settings['SEND_PATTERN_API'], [
             'json' => [
                 'originator'   => $this->message->originator,
                 'recipient'    => $this->message->recipients[0],
                 'pattern_code' => @$this->settings['patterns'][@$this->message->data['pattern_id']]['pattern_code'],
-                'values'       => array_merge((array) @$this->settings['patterns'][@$this->message->data['pattern_id']]['values'], (array) @$this->message->data['values']),
+                'values'       => $values,
             ],
             'headers' => [
                 'Accept'        => 'application/json',
