@@ -1,7 +1,9 @@
 <?php
+
 namespace Metti\LaravelSms\Contracts;
 
-interface DriverInterface {
+interface DriverInterface
+{
     /**
      * @return mixed
      * @description send message action

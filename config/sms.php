@@ -14,19 +14,19 @@ return [
 
     'drivers' => [
         'ippanel' => [
-            'key' => '',
+            'key'        => '',
             'originator' => '+9890000',
-//            'patterns' => [
-//                'verify' => [
-//                    'pattern_code' => '',
-//                ],
-//            ],
+            //            'patterns' => [
+            //                'verify' => [
+            //                    'pattern_code' => '',
+            //                ],
+            //            ],
             'SEND_MESSAGE_API' => 'http://rest.ippanel.com/v1/messages',
             'SEND_PATTERN_API' => 'http://rest.ippanel.com/v1/messages/patterns/send',
         ],
     ],
 
     'map' => [
-        'ippanel' => \Metti\LaravelSms\Drivers\Ippanel\Ippanel::class
+        'ippanel' => \Metti\LaravelSms\Drivers\Ippanel\Ippanel::class,
     ],
 ];

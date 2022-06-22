@@ -1,4 +1,5 @@
 <?php
+
 namespace Metti\LaravelSms\Abstracts;
 
 use Metti\LaravelSms\Contracts\DriverInterface;
@@ -23,7 +24,7 @@ abstract class Driver implements DriverInterface
      */
     public $message;
 
-    abstract public function __construct($message,$settings);
+    abstract public function __construct($message, $settings);
 
     /**
      * @return mixed
