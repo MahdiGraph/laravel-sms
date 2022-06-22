@@ -4,7 +4,11 @@
 
 # Laravel SMS Integration Package
 
+[![Software License][ico-license]]
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Total Downloads on Packagist][ico-download]][link-packagist]
 [![Maintainability](https://api.codeclimate.com/v1/badges/03c352daab19de73191a/maintainability)](https://codeclimate.com/github/MahdiGraph/laravel-sms/maintainability)
+[![StyleCI](https://github.styleci.io/repos/7548986/shield?style=flat&branch=6.x)](https://github.styleci.io/repos/7548986)
 [![Quality Score][ico-code-quality]][link-code-quality]
 
 This is a Laravel Package for SMS Integrations. This package supports `Laravel 5.8+`.
@@ -128,3 +132,7 @@ The MIT License (MIT).
 [link-code-quality]: https://scrutinizer-ci.com/g/mahdigraph/laravel-sms
 [link-author]: https://github.com/MahdiGraph
 [link-contributors]: https://github.com/MahdiGraph/laravel-sms/graphs/contributors
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/mahdigraph/laravel-sms.svg?style=flat-square
+[ico-download]: https://img.shields.io/packagist/dt/mahdigraph/laravel-sms.svg?color=%23F18&
+[link-packagist]: https://packagist.org/packages/mahdigraph/laravel-sms
