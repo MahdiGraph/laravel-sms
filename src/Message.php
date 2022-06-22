@@ -1,10 +1,12 @@
 <?php
+
 namespace Metti\LaravelSms;
 
 use Metti\LaravelSms\Exceptions\MessageException;
 use Ramsey\Uuid\Uuid;
 
-class Message {
+class Message
+{
     /**
      * @var string
      * @description message's unique id (uuid)
@@ -60,7 +62,7 @@ class Message {
     }
 
     /**
-     * Get the driver name
+     * Get the driver name.
      *
      * @return string
      */
@@ -71,36 +73,42 @@ class Message {
 
     /**
      * @param $originator
+     *
      * @return $this
      * @description set message originator/sender number
      */
-    public function originator($originator){
-        $this->originator = (string)$originator;
+    public function originator($originator)
+    {
+        $this->originator = (string) $originator;
 
         return $this;
     }
 
     /**
      * @param $recipients
+     *
      * @return $this
      * @description send message to recipient number/numbers
      */
-    public function recipients($recipients){
-        $this->recipients = (array)$recipients;
+    public function recipients($recipients)
+    {
+        $this->recipients = (array) $recipients;
 
         return $this;
     }
 
     /**
      * @param $text
+     *
      * @return $this
      * @description set message text
      */
-    public function textMessage($text){
+    public function textMessage($text)
+    {
         $this->type = 'text';
-        $this->data = array(
+        $this->data = [
             'text' => $text,
-        );
+        ];
 
         return $this;
     }
@@ -108,15 +116,17 @@ class Message {
     /**
      * @param $pattern_id
      * @param $params
+     *
      * @return $this
      * @description send message by pattern (pattern must be set in sms config file)
      */
-    public function patternMessage($pattern_id, $params){
+    public function patternMessage($pattern_id, $params)
+    {
         $this->type = 'pattern';
-        $this->data = array(
+        $this->data = [
             'pattern_id' => $pattern_id,
-            'values' => $params,
-        );
+            'values'     => $params,
+        ];
 
         return $this;
     }
@@ -125,7 +135,8 @@ class Message {
      * @return mixed
      * @description get response from driver
      */
-    public function getResponse(){
+    public function getResponse()
+    {
         return $this->response;
     }
 
@@ -133,7 +144,8 @@ class Message {
      * @return bool
      * @description get message's status (sent or not)
      */
-    public function isSent(){
+    public function isSent()
+    {
         return $this->is_sent;
     }
 
@@ -147,38 +159,40 @@ class Message {
     }
 
     /**
-     * @return void
      * @throws MessageException
+     *
+     * @return void
      * @description validate message parameters
      */
-    public function validate(){
-        if (empty($this->type)){
+    public function validate()
+    {
+        if (empty($this->type)) {
             throw new MessageException('نوع پیام مشخص نمیباشد');
         }
 
-        if($this->type == 'text'){
-            if (empty($this->data['text'])){
+        if ($this->type == 'text') {
+            if (empty($this->data['text'])) {
                 throw new MessageException('پیام حاوی متن نمیباشد');
             }
         }
 
-        if($this->type == 'pattern'){
-            if (empty($this->data['pattern_id'])){
+        if ($this->type == 'pattern') {
+            if (empty($this->data['pattern_id'])) {
                 throw new MessageException('آیدی پترن الزامی است');
             }
         }
 
-        if(empty($this->originator)){
+        if (empty($this->originator)) {
             throw new MessageException('ارسال کننده پیام مشخص نمیباشد');
         }
 
-        if(empty($this->recipients)){
+        if (empty($this->recipients)) {
             throw new MessageException('دریافت کننده پیام مشخص نمیباشد');
         }
     }
 
     /**
-     * Set message uuid
+     * Set message uuid.
      *
      * @param $uuid|null
      *
@@ -186,7 +200,7 @@ class Message {
      */
     private function uuid($uuid = null)
     {
-        if (empty($uuid)){
+        if (empty($uuid)) {
             $uuid = Uuid::uuid4()->toString();
         }
         $this->uuid = $uuid;

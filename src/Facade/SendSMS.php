@@ -5,9 +5,7 @@ namespace Metti\LaravelSms\Facade;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class SendSMS
- *
- * @package Metti\LaravelSms\Facade
+ * Class SendSMS.
  */
 class SendSMS extends Facade
 {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Metti\LaravelSms\Drivers\Ippanel;
 
 use GuzzleHttp\Client;
@@ -6,7 +7,8 @@ use Metti\LaravelSms\Abstracts\Driver;
 use Metti\LaravelSms\Exceptions\DriverException;
 use Metti\LaravelSms\Exceptions\ResponseErrorException;
 
-class Ippanel extends Driver {
+class Ippanel extends Driver
+{
     /**
      * Guzzle Client.
      *
@@ -15,7 +17,7 @@ class Ippanel extends Driver {
     protected $client;
 
     /**
-     * Driver config settings
+     * Driver config settings.
      *
      * @var object
      */
@@ -23,85 +25,91 @@ class Ippanel extends Driver {
 
     public $message;
 
-    public function __construct($message,$settings){
+    public function __construct($message, $settings)
+    {
         $this->client = new Client();
         $this->message = $message;
-        $this->settings = (array)$settings;
+        $this->settings = (array) $settings;
     }
 
-    public function sendMessage(){
-        if($this->message->type == 'text'){
+    public function sendMessage()
+    {
+        if ($this->message->type == 'text') {
             $res = $this->sendTextMessage();
-        }elseif ($this->message->type == 'pattern') {
+        } elseif ($this->message->type == 'pattern') {
             $res = $this->sendPatternMessage();
-        }else {
+        } else {
             throw new DriverException('این نوع پیام توسط آیپی پنل پشتیبانی نمیشود');
         }
 
-        $body = (array)@json_decode($res->getBody()->getContents(), true);
+        $body = (array) @json_decode($res->getBody()->getContents(), true);
 
         $this->message->response = $body;
 
         // validate response
-        if (@$body['status'] !== 'OK'){
+        if (@$body['status'] !== 'OK') {
             throw new ResponseErrorException([
-                'message' => $this->getStatusCodeMessage(@$body['code']),
+                'message'  => $this->getStatusCodeMessage(@$body['code']),
                 'response' => $body,
             ]);
             $this->message->is_sent = false;
-        }else {
+        } else {
             $this->message->is_sent = true;
         }
 
         return $this->message;
     }
 
-    private function sendPatternMessage(){
-        if (count($this->message->recipients) > 1){
+    private function sendPatternMessage()
+    {
+        if (count($this->message->recipients) > 1) {
             throw new DriverException('امکان ارسال پترن بطور همزمان به چندین شماره در آیپی پنل پشتیبانی نمیشود');
         }
+
         return $this->client->request('POST', $this->settings['SEND_PATTERN_API'], [
             'json' => [
-                'originator' => $this->message->originator,
-                'recipient' => $this->message->recipients[0],
+                'originator'   => $this->message->originator,
+                'recipient'    => $this->message->recipients[0],
                 'pattern_code' => @$this->settings['patterns'][@$this->message->data['pattern_id']]['pattern_code'],
-                'values' => array_merge((array)@$this->settings['patterns'][@$this->message->data['pattern_id']]['values'],(array)@$this->message->data['values']),
+                'values'       => array_merge((array) @$this->settings['patterns'][@$this->message->data['pattern_id']]['values'], (array) @$this->message->data['values']),
             ],
             'headers' => [
-                "Accept" => "application/json",
+                'Accept'        => 'application/json',
                 'Authorization' => "AccessKey {$this->settings['key']}",
             ],
-            "http_errors" => false,
+            'http_errors' => false,
         ]);
     }
 
-    private function sendTextMessage(){
+    private function sendTextMessage()
+    {
         return $this->client->request('POST', $this->settings['SEND_MESSAGE_API'], [
             'json' => [
                 'originator' => $this->message->originator,
                 'recipients' => $this->message->recipients,
-                'message' => $this->message->data['text'],
+                'message'    => $this->message->data['text'],
             ],
             'headers' => [
-                "Accept" => "application/json",
+                'Accept'        => 'application/json',
                 'Authorization' => "AccessKey {$this->settings['key']}",
             ],
-            "http_errors" => false,
+            'http_errors' => false,
         ]);
     }
 
-    private function getStatusCodeMessage($statusCode){
+    private function getStatusCodeMessage($statusCode)
+    {
         $translations = [
-            400 => 'خطایی رخ داد',
-            401 => 'احراز هویت با شکست مواجه شد',
-            422 => 'برخی از ورودی ها صحیح نیست',
+            400   => 'خطایی رخ داد',
+            401   => 'احراز هویت با شکست مواجه شد',
+            422   => 'برخی از ورودی ها صحیح نیست',
             10023 => 'شماره ارسال کننده یافت نشد',
             10004 => 'شماره ارسال کننده متعلق به شما نیست',
             10015 => 'پارامتر های پترن صحیح نیست',
         ];
-        if (in_array($statusCode, array_keys($translations))){
+        if (in_array($statusCode, array_keys($translations))) {
             return $translations[$statusCode];
-        }else {
+        } else {
             return 'خطای ناشناخته';
         }
     }
