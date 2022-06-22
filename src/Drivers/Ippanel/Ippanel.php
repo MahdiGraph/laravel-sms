@@ -60,7 +60,7 @@ class Ippanel extends Driver {
         if (count($this->message->recipients) > 1){
             throw new DriverException('امکان ارسال پترن بطور همزمان به چندین شماره در آیپی پنل پشتیبانی نمیشود');
         }
-        return $this->client->request('POST','http://rest.ippanel.com/v1/messages/patterns/send', [
+        return $this->client->request('POST', $this->settings['SEND_PATTERN_API'], [
             'json' => [
                 'originator' => $this->message->originator,
                 'recipient' => $this->message->recipients[0],
@@ -76,7 +76,7 @@ class Ippanel extends Driver {
     }
 
     private function sendTextMessage(){
-        return $this->client->request('POST','http://rest.ippanel.com/v1/messages', [
+        return $this->client->request('POST', $this->settings['SEND_MESSAGE_API'], [
             'json' => [
                 'originator' => $this->message->originator,
                 'recipients' => $this->message->recipients,

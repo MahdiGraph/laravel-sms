@@ -20,7 +20,9 @@ return [
 //                'verify' => [
 //                    'pattern_code' => '',
 //                ],
-//            ]
+//            ],
+            'SEND_MESSAGE_API' => 'http://rest.ippanel.com/v1/messages',
+            'SEND_PATTERN_API' => 'http://rest.ippanel.com/v1/messages/patterns/send',
         ],
     ],
 
