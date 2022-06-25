@@ -67,9 +67,9 @@ class Ippanel extends Driver
         }
 
         $values = array_merge((array) @$this->settings['patterns'][@$this->message->data['pattern_id']]['values'], (array) @$this->message->data['values']);
-        foreach($values as $key => $value){
-            if (!is_string($value)){
-                $values[$key] = (string)$value;
+        foreach ($values as $key => $value) {
+            if (!is_string($value)) {
+                $values[$key] = (string) $value;
             }
         }
 
